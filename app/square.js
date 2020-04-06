@@ -12,10 +12,17 @@ class Square {
   }
 
   stayInsideTheGameBoard() {
-    if (mouseX > x && mouseX < x + w && mouseY > y && mouseY < y + h) {
-      this.dragging = true;
-    } else {
-      this.dragging = false;
+    if (this.x + this.edgeLength > width) {
+      this.x = width - this.edgeLength;
+    }
+    if (this.y + this.edgeLength > height) {
+      this.y = height - this.edgeLength;
+    }
+    if (this.x < 0) {
+      this.x = 0;
+    }
+    if (this.y < 0) {
+      this.y = 0;
     }
   }
 

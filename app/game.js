@@ -1,35 +1,22 @@
 class Game {
   constructor() {
-    this.level = new Level("blue", [
-      {
-        shape: "circle",
-        size: 12,
-        color: "blue",
-        position: { x: 100, y: 100 },
-        type: "movable",
-      },
-      {
-        shape: "square",
-        size: 25,
-        color: "blue",
-        position: { x: 200, y: 150 },
-        type: "movable",
-      },
-    ]);
+    this.levels = levels.map((level) => {
+      return new Level(level.color, level.shapes);
+    });
   }
   display() {
-    this.level.display();
+    this.levels[0].display();
   }
 
   onclick() {
-    this.level.onclick(mouseX, mouseY);
+    this.levels[0].onclick(mouseX, mouseY);
   }
 
   onrelease() {
-    this.level.onrelease();
+    this.levels[0].onrelease();
   }
   ondrag() {
-    this.level.ondrag(mouseX, mouseY);
+    this.levels[0].ondrag(mouseX, mouseY);
   }
 
   // init() {
