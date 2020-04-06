@@ -13,17 +13,22 @@ class Ball {
     this.y = random(minY, maxY);
   };
   draw = () => {
+    if (this.x + this.radius > width) {
+      this.x = width - this.radius;
+    }
+    if (this.y + this.radius > height) {
+      this.y = height - this.radius;
+    }
+    if (this.x - this.radius < 0) {
+      this.x = this.radius;
+    }
+    if (this.y - this.radius < 0) {
+      this.y = this.radius;
+    }
+
     fill(this.color.r, this.color.g, this.color.b);
     noStroke();
     circle(this.x, this.y, this.radius * 2);
-    if (
-      this.x + this.radius > width ||
-      this.y + this.radius > height ||
-      this.x - this.radius < 0 ||
-      this.y - this.radius < 0
-    ) {
-      print("OFF THE SCREEN");
-    }
   };
   onclick = (mouseX, mouseY) => {
     let distance = dist(mouseX, mouseY, this.x, this.y);
