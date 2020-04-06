@@ -1,18 +1,17 @@
-class Ball {
-  constructor(color, radius, x, y) {
+class Circle {
+  constructor(color, radius, x, y, type) {
     this.color = color;
     this.radius = radius;
     this.x = x;
     this.y = y;
     this.offsetX = 0;
     this.offsetY = 0;
+    this.type = type;
     this.dragging = false;
+    this.frame = 0;
   }
-  randomPosition = (minX, maxX, minY, maxY) => {
-    this.x = random(minX, maxX);
-    this.y = random(minY, maxY);
-  };
-  draw = () => {
+
+  stayInsideTheGameBoard() {
     if (this.x + this.radius > width) {
       this.x = width - this.radius;
     }
@@ -25,12 +24,28 @@ class Ball {
     if (this.y - this.radius < 0) {
       this.y = this.radius;
     }
+  }
 
-    fill(this.color.r, this.color.g, this.color.b);
+  display = () => {
+    this.stayInsideTheGameBoard();
+    push();
+    fill(this.color);
     noStroke();
-    circle(this.x, this.y, this.radius * 2);
+    circle(
+      this.x,
+      this.y,
+      this.type === "static"
+        ? this.radius * 2
+        : this.radius * 2 + Math.sin(this.frame / 10) * 2
+    );
+    pop();
+    this.frame++;
   };
+
   onclick = (mouseX, mouseY) => {
+    if (this.type === "static") {
+      return;
+    }
     let distance = dist(mouseX, mouseY, this.x, this.y);
     if (distance < this.radius) {
       this.dragging = true;
@@ -40,6 +55,9 @@ class Ball {
   };
 
   ondrag = (mouseX, mouseY) => {
+    if (this.type === "static") {
+      return;
+    }
     if (this.dragging) {
       const newX = mouseX - this.offsetX;
       const newY = mouseY - this.offsetY;
@@ -50,6 +68,9 @@ class Ball {
     }
   };
   onrelease = () => {
+    if (this.type === "static") {
+      return;
+    }
     if (this.dragging) {
       this.dragging = false;
       this.offsetX = 0;

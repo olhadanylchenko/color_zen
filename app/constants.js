@@ -1,0 +1,1 @@
+const borderWidth = 10;
