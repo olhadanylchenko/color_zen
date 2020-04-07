@@ -26,7 +26,19 @@ class Level {
     strokeWeight(borderWidth);
     stroke(this.endcolor);
     rect(0, 0, width, height);
-    this.shapes.forEach((shape) => shape.display());
+    this.shapes.forEach((shape) => {
+      shape.display();
+    });
+    this.shapes.forEach((shape1) => {
+      this.shapes.forEach((shape2) => {
+        if (shape1 !== shape2 && shape1.intersects(shape2)) {
+          shape1.x = shape1.x + shape1.radius;
+          shape2.x = shape2.x;
+          shape1.y = shape1.y + shape1.radius;
+          shape2.y = shape2.y;
+        }
+      });
+    });
   }
   onclick() {
     this.shapes.forEach((shape) => shape.onclick(mouseX, mouseY));

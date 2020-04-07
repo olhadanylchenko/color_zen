@@ -77,4 +77,9 @@ class Circle {
       this.offsetY = 0;
     }
   };
+
+  intersects = (otherShape) => {
+    let distance = dist(this.x, this.y, otherShape.x, otherShape.y);
+    return distance < this.radius + otherShape.radius;
+  };
 }

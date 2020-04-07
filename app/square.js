@@ -12,23 +12,24 @@ class Square {
   }
 
   stayInsideTheGameBoard() {
-    if (this.x + this.edgeLength > width) {
-      this.x = width - this.edgeLength;
+    if (this.x - borderWidth * 2 + this.edgeLength > width - borderWidth * 2) {
+      this.x = width - this.edgeLength - borderWidth / 2;
     }
-    if (this.y + this.edgeLength > height) {
-      this.y = height - this.edgeLength;
+    if (this.y - borderWidth * 2 + this.edgeLength > height - borderWidth * 2) {
+      this.y = height - this.edgeLength - borderWidth / 2;
     }
-    if (this.x < 0) {
-      this.x = 0;
+    if (this.x - this.edgeLength - borderWidth * 2 < 0) {
+      this.x = this.edgeLength + borderWidth / 2;
     }
-    if (this.y < 0) {
-      this.y = 0;
+    if (this.y - this.edgeLength - borderWidth * 2 < 0) {
+      this.y = this.edgeLength + borderWidth / 2;
     }
   }
 
   display = () => {
     this.stayInsideTheGameBoard();
     push();
+    rectMode(CENTER);
     fill(this.color);
     noStroke();
     rect(
@@ -76,5 +77,8 @@ class Square {
       this.offsetX = 0;
       this.offsetY = 0;
     }
+  };
+  intersects = () => {
+    return false;
   };
 }

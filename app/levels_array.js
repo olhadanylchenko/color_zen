@@ -1,6 +1,7 @@
 const levels = [
   {
     color: "blue",
+    background: "gray",
     shapes: [
       {
         shape: "circle",
@@ -11,10 +12,17 @@ const levels = [
       },
       {
         shape: "square",
-        size: 25,
-        color: "blue",
+        size: 50,
+        color: "red",
         position: { x: 200, y: 150 },
-        type: "static",
+        type: "movable",
+      },
+      {
+        shape: "circle",
+        size: 12,
+        color: "blue",
+        position: { x: 20, y: 30 },
+        type: "movable",
       },
     ],
   },
