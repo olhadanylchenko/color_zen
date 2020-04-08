@@ -8,6 +8,8 @@ class Square {
     this.offsetY = 0;
     this.type = type;
     this.dragging = false;
+    this.expanding = false;
+
     this.frame = 0;
     this.shape = "square";
   }
@@ -28,20 +30,37 @@ class Square {
   }
 
   display = () => {
-    this.stayInsideTheGameBoard();
-    push();
-    rectMode(CENTER);
-    fill(this.color);
-    noStroke();
-    rect(
-      this.x,
-      this.y,
-      this.type === "static"
-        ? this.edgeLength * 2
-        : this.edgeLength * 2 + Math.sin(this.frame / 10) * 2
-    );
-    pop();
-    this.frame++;
+    if (this.expanding) {
+      this.edgeLength += 3.5;
+      push();
+      rectMode(CENTER);
+      fill(this.color);
+      noStroke();
+      rect(
+        this.x,
+        this.y,
+        this.type === "static"
+          ? this.edgeLength * 2
+          : this.edgeLength * 2 + Math.sin(this.frame / 10) * 2
+      );
+      pop();
+      this.frame++;
+    } else {
+      this.stayInsideTheGameBoard();
+      push();
+      rectMode(CENTER);
+      fill(this.color);
+      noStroke();
+      rect(
+        this.x,
+        this.y,
+        this.type === "static"
+          ? this.edgeLength * 2
+          : this.edgeLength * 2 + Math.sin(this.frame / 10) * 2
+      );
+      pop();
+      this.frame++;
+    }
   };
 
   onclick = (mouseX, mouseY) => {
@@ -79,8 +98,15 @@ class Square {
       this.offsetY = 0;
     }
   };
-  intersects = () => {
-    return false;
+  intersects = (otherShape) => {
+    if (otherShape.shape === "square") {
+      let collision =
+        this.x + this.edgeLength > otherShape.x &&
+        this.x - this.edgeLength < otherShape.x + otherShape.edgeLength &&
+        this.y + this.edgeLength > otherShape.y &&
+        this.y - this.edgeLength < otherShape.y + otherShape.edgeLength;
+      return collision;
+    }
   };
 
   expand = () => {

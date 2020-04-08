@@ -1,6 +1,6 @@
 class Level {
-  constructor(endcolor, shapes, nextLevel, index) {
-    this.background = "rgb(172, 179, 200)";
+  constructor(endcolor, shapes, nextLevel, restart, index) {
+    this.background = "rgb(28, 28, 30)";
     this.endcolor = endcolor;
     this.shapes = shapes.map((shape) => {
       if (shape.shape === "circle") {
@@ -24,6 +24,7 @@ class Level {
     this.colliding = false;
     this.nextLevel = nextLevel;
     this.levelNumber = index;
+    this.restart = restart;
   }
 
   displayBackground() {
@@ -35,20 +36,6 @@ class Level {
     stroke(this.endcolor);
     noFill();
     rect(0, 0, width, height);
-  }
-
-  displayCongrats() {
-    console.log("winner");
-    push();
-    rectMode(CENTER);
-    fill(51, 150);
-    noStroke();
-    rect(width / 2, height / 2, 150, 70);
-    textAlign(CENTER, CENTER);
-    textSize(32);
-    fill(190);
-    text(`Level ${this.levelNumber + 2}`, width / 2, height / 2);
-    pop();
   }
 
   loseGame(shapes) {
@@ -74,15 +61,15 @@ class Level {
 
   display() {
     this.displayBackground();
+
     if (this.loseGame(this.shapes)) {
-      console.log("Looser");
+      return this.restart();
     }
 
     if (this.winLevel(this.shapes)) {
-      this.displayCongrats();
-
-      return;
+      return this.nextLevel();
     }
+
     // two forEach so that the shapes are drawn in the correct order and when shapes expand they don't overlap other shapes
     this.shapes
       .filter((shape) => shape.expanding)
@@ -97,9 +84,21 @@ class Level {
 
     this.shapes.forEach((shape1) => {
       this.shapes.forEach((shape2) => {
-        if (!this.colliding && shape1 !== shape2 && shape1.intersects(shape2)) {
+        if (
+          shape1.color === shape2.color &&
+          !this.colliding &&
+          shape1 !== shape2 &&
+          shape1.intersects(shape2)
+        ) {
+          if (shape1.shape === "square" && shape1.shape === "circle") {
+            this.colliding = true;
+            shape1.expand();
+            shape2.expand();
+          }
           if (shape1.shape === "circle") {
-            console.log("square INTERSECTS YO");
+            this.colliding = true;
+            shape1.expand();
+            shape2.expand();
           }
           if (shape1.color === shape2.color) {
             this.colliding = true;

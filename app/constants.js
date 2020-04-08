@@ -8,3 +8,11 @@ const uniquifyArray = (array) => {
       } else return acc;
     }, []);
 };
+
+const red = "rgb(226, 56, 56)";
+const blue = "rgb(137,230,254)";
+const purple = "rgb(151, 57, 153)";
+const green = "rgb(94, 189, 62)";
+const yellow = "rgb(255, 185, 0)";
+const orange = "rgb(247, 130, 0)";
+const pink = "rgb(254, 127, 156)";
