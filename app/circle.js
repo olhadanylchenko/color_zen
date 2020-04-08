@@ -8,7 +8,9 @@ class Circle {
     this.offsetY = 0;
     this.type = type;
     this.dragging = false;
+    this.expanding = false;
     this.frame = 0;
+    this.shape = "circle";
   }
 
   stayInsideTheGameBoard() {
@@ -27,19 +29,36 @@ class Circle {
   }
 
   display = () => {
-    this.stayInsideTheGameBoard();
-    push();
-    fill(this.color);
-    noStroke();
-    circle(
-      this.x,
-      this.y,
-      this.type === "static"
-        ? this.radius * 2
-        : this.radius * 2 + Math.sin(this.frame / 10) * 2
-    );
-    pop();
-    this.frame++;
+    if (this.expanding) {
+      // this.stayInsideTheGameBoard();
+      this.radius += 7;
+      push();
+      fill(this.color);
+      noStroke();
+      circle(
+        this.x,
+        this.y,
+        this.type === "static"
+          ? this.radius * 2
+          : this.radius * 2 + Math.sin(this.frame / 10) * 2
+      );
+      pop();
+      this.frame++;
+    } else {
+      this.stayInsideTheGameBoard();
+      push();
+      fill(this.color);
+      noStroke();
+      circle(
+        this.x,
+        this.y,
+        this.type === "static"
+          ? this.radius * 2
+          : this.radius * 2 + Math.sin(this.frame / 10) * 2
+      );
+      pop();
+      this.frame++;
+    }
   };
 
   onclick = (mouseX, mouseY) => {
@@ -79,7 +98,21 @@ class Circle {
   };
 
   intersects = (otherShape) => {
-    let distance = dist(this.x, this.y, otherShape.x, otherShape.y);
-    return distance < this.radius + otherShape.radius;
+    if (otherShape.shape === "circle") {
+      let distance = dist(this.x, this.y, otherShape.x, otherShape.y);
+      return distance < this.radius + otherShape.radius;
+    }
+    if (otherShape.shape === "square") {
+      let collision =
+        this.x + this.radius > otherShape.x &&
+        this.x - this.radius < otherShape.x + otherShape.edgeLength &&
+        this.y + this.radius > otherShape.y &&
+        this.y - this.radius < otherShape.y + otherShape.edgeLength;
+      return collision;
+    }
+  };
+
+  expand = () => {
+    this.expanding = true;
   };
 }

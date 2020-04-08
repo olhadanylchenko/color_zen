@@ -1,5 +1,6 @@
 class Level {
   constructor(endcolor, shapes) {
+    this.background = "rgb(172, 179, 200)";
     this.endcolor = endcolor;
     this.shapes = shapes.map((shape) => {
       if (shape.shape === "circle") {
@@ -19,35 +20,71 @@ class Level {
           shape.type
         );
       }
+      this.colliding = false;
     });
   }
 
-  display() {
+  displayBackground() {
+    fill(this.background);
+    rect(0, 0, width, height);
+  }
+  displayBorder() {
     strokeWeight(borderWidth);
     stroke(this.endcolor);
+    noFill();
     rect(0, 0, width, height);
-    this.shapes.forEach((shape) => {
-      shape.display();
-    });
+  }
+
+  display() {
+    this.displayBackground();
+    // two forEach so that the shapes are drawn in the correct order
+    this.shapes
+      .filter((shape) => shape.expanding)
+      .forEach((shape) => {
+        shape.display();
+      });
+    this.shapes
+      .filter((shape) => !shape.expanding)
+      .forEach((shape) => {
+        shape.display();
+      });
+
     this.shapes.forEach((shape1) => {
       this.shapes.forEach((shape2) => {
-        if (shape1 !== shape2 && shape1.intersects(shape2)) {
-          shape1.x = shape1.x + shape1.radius;
-          shape2.x = shape2.x;
-          shape1.y = shape1.y + shape1.radius;
-          shape2.y = shape2.y;
+        if (!this.colliding && shape1 !== shape2 && shape1.intersects(shape2)) {
+          if (shape1.shape === "circle") {
+            console.log("square INTERSECTS YO");
+          }
+          if (shape1.color === shape2.color) {
+            game.newLevel = true;
+            this.colliding = true;
+            shape1.expand();
+            shape2.expand();
+
+            setTimeout(() => {
+              this.background = shape1.color;
+              this.colliding = false;
+              this.shapes = this.shapes.filter((shape) => !shape.expanding);
+            }, 1000);
+          }
         }
       });
     });
+
+    this.displayBorder();
   }
   onclick() {
-    this.shapes.forEach((shape) => shape.onclick(mouseX, mouseY));
+    if (!this.colliding) {
+      this.shapes.forEach((shape) => shape.onclick(mouseX, mouseY));
+    }
   }
 
   onrelease() {
     this.shapes.forEach((shape) => shape.onrelease());
   }
   ondrag() {
-    this.shapes.forEach((shape) => shape.ondrag(mouseX, mouseY));
+    if (!this.colliding) {
+      this.shapes.forEach((shape) => shape.ondrag(mouseX, mouseY));
+    }
   }
 }

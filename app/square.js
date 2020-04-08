@@ -9,6 +9,7 @@ class Square {
     this.type = type;
     this.dragging = false;
     this.frame = 0;
+    this.shape = "square";
   }
 
   stayInsideTheGameBoard() {
@@ -80,5 +81,9 @@ class Square {
   };
   intersects = () => {
     return false;
+  };
+
+  expand = () => {
+    this.expanding = true;
   };
 }
