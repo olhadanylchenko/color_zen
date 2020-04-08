@@ -1,5 +1,5 @@
 class Level {
-  constructor(endcolor, shapes) {
+  constructor(endcolor, shapes, nextLevel, index) {
     this.background = "rgb(172, 179, 200)";
     this.endcolor = endcolor;
     this.shapes = shapes.map((shape) => {
@@ -20,8 +20,10 @@ class Level {
           shape.type
         );
       }
-      this.colliding = false;
     });
+    this.colliding = false;
+    this.nextLevel = nextLevel;
+    this.levelNumber = index;
   }
 
   displayBackground() {
@@ -35,9 +37,53 @@ class Level {
     rect(0, 0, width, height);
   }
 
+  displayCongrats() {
+    console.log("winner");
+    push();
+    rectMode(CENTER);
+    fill(51, 150);
+    noStroke();
+    rect(width / 2, height / 2, 150, 70);
+    textAlign(CENTER, CENTER);
+    textSize(32);
+    fill(190);
+    text(`Level ${this.levelNumber + 2}`, width / 2, height / 2);
+    pop();
+  }
+
+  loseGame(shapes) {
+    const colors = shapes.map((shape) => shape.color);
+    const uniqueColors = uniquifyArray(colors);
+    if (colors.length === 0 && this.background != this.endcolor) {
+      return true;
+    }
+    if (
+      colors.length > 0 &&
+      !colors.includes(this.endcolor) &&
+      uniqueColors.length == colors.length
+    ) {
+      return true;
+    }
+    // TODO STATIC SHAPES CAUSE THEY ARE MVP
+  }
+
+  winLevel(shapes) {
+    const colors = shapes.map((shape) => shape.color);
+    return colors.length === 0 && this.background === this.endcolor;
+  }
+
   display() {
     this.displayBackground();
-    // two forEach so that the shapes are drawn in the correct order
+    if (this.loseGame(this.shapes)) {
+      console.log("Looser");
+    }
+
+    if (this.winLevel(this.shapes)) {
+      this.displayCongrats();
+
+      return;
+    }
+    // two forEach so that the shapes are drawn in the correct order and when shapes expand they don't overlap other shapes
     this.shapes
       .filter((shape) => shape.expanding)
       .forEach((shape) => {
@@ -56,7 +102,6 @@ class Level {
             console.log("square INTERSECTS YO");
           }
           if (shape1.color === shape2.color) {
-            game.newLevel = true;
             this.colliding = true;
             shape1.expand();
             shape2.expand();
@@ -64,7 +109,9 @@ class Level {
             setTimeout(() => {
               this.background = shape1.color;
               this.colliding = false;
-              this.shapes = this.shapes.filter((shape) => !shape.expanding);
+              this.shapes = this.shapes.filter(
+                (shape) => !shape.expanding && shape.color !== shape1.color
+              );
             }, 1000);
           }
         }

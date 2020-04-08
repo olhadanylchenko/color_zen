@@ -32,6 +32,13 @@ const levels = [
         position: { x: 200, y: 150 },
         type: "movable",
       },
+      // {
+      //   shape: "circle",
+      //   size: 40,
+      //   color: "green",
+      //   position: { x: 100, y: 250 },
+      //   type: "movable",
+      // },
     ],
   },
 ];

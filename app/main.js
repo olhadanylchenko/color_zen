@@ -4,6 +4,7 @@ let game;
 function setup() {
   createCanvas(384, 216);
   game = new Game();
+  console.log(levels[0].shapes);
 }
 
 function draw() {
