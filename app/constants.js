@@ -9,7 +9,7 @@ const uniquifyArray = (array) => {
     }, []);
 };
 
-const friction = 0.5;
+const friction = 0.9;
 
 const red = "rgb(226, 56, 56)";
 const blue = "rgb(137,230,254)";

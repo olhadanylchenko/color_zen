@@ -1,37 +1,39 @@
-class Square {
-  constructor(color, edgeLength, x, y, type) {
-    this.color = color;
-    this.edgeLength = edgeLength;
-    this.x = x;
-    this.y = y;
-    this.offsetX = 0;
-    this.offsetY = 0;
-    this.type = type;
-    this.dragging = false;
-    this.expanding = false;
-    this.frame = 0;
+class Square extends Shape {
+  constructor(color, size, x, y, type) {
+    super(color, size, x, y, type);
+    this.edgeLength = size;
     this.shape = "square";
-    this.previousX = x;
-    this.previousY = y;
-    this.speedX = 0;
-    this.speedY = 0;
   }
 
   stayInsideTheGameBoard() {
-    if (this.x - borderWidth * 2 + this.edgeLength > width - borderWidth * 2) {
-      this.x = width - this.edgeLength - borderWidth / 2;
+    let hitHorizontalEdge = false;
+    let hitVerticalEdge = false;
+
+    if (this.x + this.edgeLength / 2 > width - borderWidth) {
+      this.x = width - borderWidth - 1 - this.edgeLength / 2;
+      hitVerticalEdge = true;
     }
-    if (this.y - borderWidth * 2 + this.edgeLength > height - borderWidth * 2) {
-      this.y = height - this.edgeLength - borderWidth / 2;
+    if (this.y + this.edgeLength / 2 > height - borderWidth) {
+      hitHorizontalEdge = true;
+      this.y = height - borderWidth - 1 - this.edgeLength / 2;
     }
-    if (this.x - this.edgeLength - borderWidth * 2 < 0) {
-      this.x = this.edgeLength + borderWidth / 2;
+    if (this.x - this.edgeLength < 0) {
+      this.x = this.edgeLength + borderWidth / 2 + 1;
+      hitVerticalEdge = true;
     }
-    if (this.y - this.edgeLength - borderWidth * 2 < 0) {
-      this.y = this.edgeLength + borderWidth / 2;
+    if (this.y - this.edgeLength / 2 <= borderWidth) {
+      hitHorizontalEdge = true;
+      this.y = borderWidth + 1 + this.edgeLength / 2;
     }
-    this.speedX = 0;
-    this.speedY = 0;
+
+    if (hitVerticalEdge) {
+      this.speedX = 0;
+      this.dragging = false;
+    }
+    if (hitHorizontalEdge) {
+      this.speedY = 0;
+      this.dragging = false;
+    }
   }
 
   display = () => {
@@ -49,14 +51,9 @@ class Square {
           : this.edgeLength * 2 + Math.sin(this.frame / 10) * 2
       );
       pop();
-      this.frame++;
     } else {
       this.stayInsideTheGameBoard();
-      this.x += this.speedX;
-      this.y += this.speedY;
-      this.speedX *= friction;
-      this.speedY *= friction;
-
+      this.updatePosition();
       push();
       rectMode(CENTER);
       fill(this.color);
@@ -69,46 +66,10 @@ class Square {
           : this.edgeLength * 2 + Math.sin(this.frame / 10) * 2
       );
       pop();
-      this.frame++;
     }
+    this.frame++;
   };
 
-  onclick = (mouseX, mouseY) => {
-    if (this.type === "static") {
-      return;
-    }
-    let distance = dist(mouseX, mouseY, this.x, this.y);
-    if (distance < this.edgeLength) {
-      this.dragging = true;
-      this.offsetX = this.x - mouseX;
-      this.offsetY = this.y - mouseY;
-    }
-  };
-
-  ondrag = (mouseX, mouseY) => {
-    if (this.type === "static") {
-      return;
-    }
-    if (this.dragging) {
-      this.previousX = this.x;
-      this.previousY = this.y;
-
-      this.x = mouseX + this.offsetX;
-      this.y = mouseY + this.offsetY;
-      this.speedX = this.previousX - this.x;
-      this.speedY = this.previousY - this.y;
-    }
-  };
-  onrelease = () => {
-    if (this.type === "static") {
-      return;
-    }
-    if (this.dragging) {
-      this.dragging = false;
-      this.offsetX = 0;
-      this.offsetY = 0;
-    }
-  };
   intersects = (otherShape) => {
     if (otherShape.shape === "square") {
       let collision =
@@ -116,31 +77,44 @@ class Square {
         this.x - this.edgeLength < otherShape.x + otherShape.edgeLength &&
         this.y + this.edgeLength > otherShape.y &&
         this.y - this.edgeLength < otherShape.y + otherShape.edgeLength;
-      // if (otherShape.color !== this.color) {
-      //   this.speed += 1;
-      //   console.log(this.speed);
-      // }
-
       return collision;
     }
+
+    // http://www.jeffreythompson.org/collision-detection/circle-rect.php
+
+    if (otherShape.shape === "circle") {
+      const circleX = otherShape.x;
+      const circleY = otherShape.y;
+
+      let testX = otherShape.x;
+      let testY = otherShape.y;
+
+      const halfEdgeLength = this.edgeLength / 2;
+      const leftEdge = this.x - halfEdgeLength;
+      const topEdge = this.y - halfEdgeLength;
+      const rightEdge = this.x + halfEdgeLength;
+      const bottomEdge = this.y + halfEdgeLength;
+
+      if (circleX < leftEdge) {
+        testX = leftEdge;
+      } else if (circleX > rightEdge) {
+        testX = rightEdge;
+      }
+
+      if (circleY < topEdge) {
+        testY = topEdge;
+      } else if (circleY > bottomEdge) {
+        testY = bottomEdge;
+      }
+
+      const distX = circleX - testX;
+      const distY = circleY - testY;
+
+      const hypotenuse = Math.sqrt(distX * distX + distY * distY);
+
+      return hypotenuse <= otherShape.radius;
+    }
+
     return false;
-  };
-
-  expand = () => {
-    this.expanding = true;
-  };
-
-  bounceAway = (otherShape) => {
-    // const difX = this.x - this.previousX;
-    // const difY = this.y - this.previousY;
-    const otherShapeX = otherShape.speedX * 2;
-    const otherShapeY = otherShape.speedY * 2;
-    this.speedX = otherShapeX;
-    this.speedY = otherShapeY;
-    otherShape.speedX = 0;
-    otherShape.speedY = 0;
-    // this.x = this.previousX ;
-    // this.y = this.previousY ;
-    this.dragging = false;
   };
 }

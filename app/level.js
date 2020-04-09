@@ -59,7 +59,6 @@ class Level {
     ) {
       return true;
     }
-    // TODO STATIC SHAPES CAUSE THEY ARE MVP
   }
 
   winLevel(shapes) {
@@ -92,35 +91,24 @@ class Level {
 
     this.shapes.forEach((shape1) => {
       this.shapes.forEach((shape2) => {
-        if (
-          shape1.color === shape2.color &&
-          !this.colliding &&
-          shape1 !== shape2 &&
-          shape1.intersects(shape2)
-        ) {
-          this.colliding = true;
-          shape1.expand();
-          shape2.expand();
-          popSound.playMode("restart");
-          popSound.play();
-          setTimeout(() => {
-            this.background = shape1.color;
-            this.colliding = false;
-            this.shapes = this.shapes.filter(
-              (shape) => !shape.expanding && shape.color !== shape1.color
-            );
-          }, 1000);
-        }
-        if (
-          shape1.color !== shape2.color &&
-          !this.colliding &&
-          shape1 !== shape2 &&
-          shape1.intersects(shape2)
-        ) {
-          shape1.bounceAway(shape2);
-
-          // this.colliding = true;
-          console.log("watch out!");
+        if (shape1 !== shape2 && !this.colliding && shape1.intersects(shape2)) {
+          if (shape1.color === shape2.color) {
+            this.colliding = true;
+            shape1.expand();
+            shape2.expand();
+            popSound.playMode("restart");
+            popSound.play();
+            setTimeout(() => {
+              this.background = shape1.color;
+              this.colliding = false;
+              this.shapes = this.shapes.filter(
+                (shape) => !shape.expanding && shape.color !== shape1.color
+              );
+            }, 1000);
+          } else {
+            shape1.bounceAway(shape2);
+            console.log("watch out!");
+          }
         }
       });
     });

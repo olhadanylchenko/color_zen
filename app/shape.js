@@ -1,7 +1,6 @@
 class Shape {
   constructor(color, size, x, y, type) {
     this.color = color;
-    // this.radius = radius;
     this.x = x;
     this.y = y;
     this.offsetX = 0;
@@ -10,26 +9,65 @@ class Shape {
     this.dragging = false;
     this.expanding = false;
     this.frame = 0;
-    // this.shape = "circle";
-    this.previousX = x;
-    this.previousY = y;
     this.speedX = 0;
     this.speedY = 0;
     this.size = size;
   }
+  updatePosition = () => {
+    this.x += this.speedX;
+    this.speedX *= friction;
 
-  aMethod = () => {
-    console.log("My Name is! TIcky ticky slim shady");
+    this.y += this.speedY;
+    this.speedY *= friction;
   };
-}
+  onclick = (mouseX, mouseY) => {
+    if (this.type === "static") {
+      return;
+    }
+    let distance = dist(mouseX, mouseY, this.x, this.y);
+    if (distance < this.size) {
+      this.dragging = true;
+      this.offsetX = mouseX - this.x;
+      this.offsetY = mouseY - this.y;
+    }
+  };
 
-class Something extends Shape {
-  constructor(color, size, x, y, type) {
-    super(color, size, x, y, type);
-    this.size = size / 2;
-  }
+  ondrag = (mouseX, mouseY) => {
+    if (this.type === "static") {
+      return;
+    }
+    if (this.dragging) {
+      const offsetX = mouseX - this.offsetX;
+      const offsetY = mouseY - this.offsetY;
+      this.speedX = offsetX - this.x;
+      this.speedY = offsetY - this.y;
+    }
+  };
 
-  aMethod = () => {
-    return 1 + 1;
+  onrelease = () => {
+    if (this.type === "static") {
+      return;
+    }
+    if (this.dragging) {
+      this.dragging = false;
+      this.offsetX = 0;
+      this.offsetY = 0;
+    }
+  };
+
+  expand = () => {
+    this.expanding = true;
+  };
+
+  bounceAway = (otherShape) => {
+    const tempSpeedX = otherShape.speedX;
+    const tempSpeedY = otherShape.speedY;
+    otherShape.speedX = this.speedX;
+    otherShape.speedY = this.speedY;
+    this.speedX = tempSpeedX;
+    this.speedY = tempSpeedY;
+
+    this.dragging = false;
+    otherShape.dragging = false;
   };
 }

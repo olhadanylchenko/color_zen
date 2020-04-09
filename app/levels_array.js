@@ -1,40 +1,5 @@
 const levels = [
   {
-    color: pink,
-    shapes: [
-      {
-        shape: "circle",
-        size: 12,
-        color: purple,
-        position: { x: 320, y: 150 },
-        type: "movable",
-      },
-
-      {
-        shape: "circle",
-        size: 125,
-        color: purple,
-        position: { x: 130, y: 170 },
-        type: "static",
-      },
-      {
-        shape: "square",
-        size: 12,
-        color: pink,
-        position: { x: 70, y: 230 },
-        type: "movable",
-      },
-
-      {
-        shape: "circle",
-        size: 50,
-        color: pink,
-        position: { x: 230, y: 150 },
-        type: "movable",
-      },
-    ],
-  },
-  {
     color: red,
     shapes: [
       {
@@ -79,6 +44,41 @@ const levels = [
         size: 45,
         color: red,
         position: { x: 75, y: 280 },
+        type: "movable",
+      },
+    ],
+  },
+  {
+    color: pink,
+    shapes: [
+      {
+        shape: "circle",
+        size: 12,
+        color: purple,
+        position: { x: 320, y: 150 },
+        type: "movable",
+      },
+
+      {
+        shape: "circle",
+        size: 125,
+        color: purple,
+        position: { x: 130, y: 170 },
+        type: "static",
+      },
+      {
+        shape: "square",
+        size: 12,
+        color: pink,
+        position: { x: 70, y: 230 },
+        type: "movable",
+      },
+
+      {
+        shape: "circle",
+        size: 50,
+        color: pink,
+        position: { x: 230, y: 150 },
         type: "movable",
       },
     ],
