@@ -30,11 +30,13 @@ class Square {
     if (this.y - this.edgeLength - borderWidth * 2 < 0) {
       this.y = this.edgeLength + borderWidth / 2;
     }
+    this.speedX = 0;
+    this.speedY = 0;
   }
 
   display = () => {
     if (this.expanding) {
-      this.edgeLength += 3.5;
+      this.edgeLength += 7.5;
       push();
       rectMode(CENTER);
       fill(this.color);
@@ -129,14 +131,16 @@ class Square {
   };
 
   bounceAway = (otherShape) => {
-    const difX = this.x - this.previousX;
-    const difY = this.y - this.previousY;
-    this.speedX *= -1;
-    this.speedY *= -1;
+    // const difX = this.x - this.previousX;
+    // const difY = this.y - this.previousY;
+    const otherShapeX = otherShape.speedX * 2;
+    const otherShapeY = otherShape.speedY * 2;
+    this.speedX = otherShapeX;
+    this.speedY = otherShapeY;
     otherShape.speedX = 0;
     otherShape.speedY = 0;
-    this.x = this.previousX - difX;
-    this.y = this.previousY - difY;
+    // this.x = this.previousX ;
+    // this.y = this.previousY ;
     this.dragging = false;
   };
 }

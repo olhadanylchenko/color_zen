@@ -30,12 +30,14 @@ class Circle {
     if (this.y - this.radius < 0) {
       this.y = this.radius;
     }
+    this.speedX = 0;
+    this.speedY = 0;
   }
 
   display = () => {
     if (this.expanding) {
       // this.stayInsideTheGameBoard();
-      this.radius += 7;
+      this.radius += 15;
       push();
       fill(this.color);
       noStroke();
@@ -118,6 +120,7 @@ class Circle {
         this.y - this.radius < otherShape.y + otherShape.edgeLength / 2;
       return collision;
     }
+
     return false;
   };
 
@@ -126,12 +129,14 @@ class Circle {
   };
 
   bounceAway = (otherShape) => {
-    const difX = this.x - this.previousX;
-    const difY = this.y - this.previousY;
-    this.speedX *= -1;
-    this.speedY *= -1;
-    this.x = this.previousX - difX;
-    this.y = this.previousY - difY;
+    // const difX = this.x - this.previousX;
+    // const difY = this.y - this.previousY;
+    const otherShapeX = otherShape.speedX;
+    const otherShapeY = otherShape.speedY;
+    this.speedX = otherShapeX;
+    this.speedY = otherShapeY;
+    // this.x = this.previousX;
+    // this.y = this.previousY;
     this.dragging = false;
   };
 }

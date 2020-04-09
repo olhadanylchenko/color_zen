@@ -22,7 +22,6 @@ class Level {
       }
     });
     this.colliding = false;
-
     this.nextLevel = nextLevel;
     this.restart = restart;
   }
@@ -41,6 +40,8 @@ class Level {
   loseGame(shapes) {
     const colors = shapes.map((shape) => shape.color);
     const uniqueColors = uniquifyArray(colors);
+    // const staticTypes = shapes.map((shape) => shape.type === "static");
+    const types = shapes.map((shape) => shape.type);
     if (colors.length === 0 && this.background != this.endcolor) {
       return true;
     }
@@ -48,6 +49,13 @@ class Level {
       colors.length > 0 &&
       !colors.includes(this.endcolor) &&
       uniqueColors.length == colors.length
+    ) {
+      return true;
+    }
+    if (
+      colors.length > 0 &&
+      !types.includes("movable")
+      // this.background != this.endcolor
     ) {
       return true;
     }
@@ -93,7 +101,8 @@ class Level {
           this.colliding = true;
           shape1.expand();
           shape2.expand();
-
+          popSound.playMode("restart");
+          popSound.play();
           setTimeout(() => {
             this.background = shape1.color;
             this.colliding = false;

@@ -71,7 +71,7 @@ class Game {
     rectMode(CENTER);
     fill(51, 150);
     noStroke();
-    rect(width / 2, height / 2, 150, 70);
+    rect(width / 2, height / 2, 300, 70);
     textAlign(CENTER, CENTER);
     textSize(32);
     fill(190);
@@ -102,10 +102,14 @@ class Game {
     // fill(51, 150);
     // noStroke();
     // rect(width / 2, height / 2, 150, 70);
-    textAlign(CENTER, 20);
-    textSize(10);
+    textAlign(CENTER, CENTER);
+    textSize(25);
     fill(137, 230, 254);
     text(`FILL SCREEN WITH BORDER COLOR`, width / 2, height / 2);
     pop();
   }
 }
+
+// startGame(){
+
+// }

@@ -1,10 +1,19 @@
 let ball;
 let game;
+let sound;
+let popSound;
 
+function preload() {
+  popSound = loadSound("./assets/popSound.mp3");
+}
+function loaded() {
+  sound.play();
+  sound.setVolume(0.5);
+}
 function setup() {
-  createCanvas(384, 216);
+  createCanvas(800, 450);
+  sound = loadSound("./assets/background_music.mp3", loaded);
   game = new Game();
-  console.log(levels[0].shapes);
 }
 
 function draw() {

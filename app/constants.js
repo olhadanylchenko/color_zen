@@ -1,4 +1,4 @@
-const borderWidth = 10;
+const borderWidth = 25;
 const uniquifyArray = (array) => {
   if (array.length === 0) return null;
   else
