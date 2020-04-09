@@ -1,5 +1,5 @@
 class Level {
-  constructor(endcolor, shapes, nextLevel, restart, index) {
+  constructor(endcolor, shapes, nextLevel, restart) {
     this.background = "rgb(28, 28, 30)";
     this.endcolor = endcolor;
     this.shapes = shapes.map((shape) => {
@@ -23,7 +23,6 @@ class Level {
     });
     this.colliding = false;
     this.nextLevel = nextLevel;
-    this.levelNumber = index;
     this.restart = restart;
   }
 

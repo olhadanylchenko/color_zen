@@ -1,13 +1,7 @@
 class Game {
   constructor() {
-    this.levels = levels.map((level, index) => {
-      return new Level(
-        level.color,
-        level.shapes,
-        this.nextLevel,
-        this.restart,
-        index
-      );
+    this.levels = levels.map((level) => {
+      return new Level(level.color, level.shapes, this.nextLevel, this.restart);
     });
     this.firstScreen = true;
     setTimeout(() => {
@@ -54,7 +48,13 @@ class Game {
 
   restart = () => {
     this.failedAndRestart = true;
-    this.level = this.levels[this.level];
+    const restartLevel = new Level(
+      levels[this.level].color,
+      levels[this.level].shapes,
+      this.nextLevel,
+      this.restart
+    );
+    this.levels[this.level] = restartLevel;
     setTimeout(() => {
       this.failedAndRestart = false;
       this.startingLevel = true;

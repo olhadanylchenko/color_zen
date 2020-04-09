@@ -9,7 +9,6 @@ class Square {
     this.type = type;
     this.dragging = false;
     this.expanding = false;
-
     this.frame = 0;
     this.shape = "square";
   }
