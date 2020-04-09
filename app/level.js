@@ -22,6 +22,7 @@ class Level {
       }
     });
     this.colliding = false;
+
     this.nextLevel = nextLevel;
     this.restart = restart;
   }
@@ -89,29 +90,28 @@ class Level {
           shape1 !== shape2 &&
           shape1.intersects(shape2)
         ) {
-          if (shape1.shape === "square" && shape1.shape === "circle") {
-            this.colliding = true;
-            shape1.expand();
-            shape2.expand();
-          }
-          if (shape1.shape === "circle") {
-            this.colliding = true;
-            shape1.expand();
-            shape2.expand();
-          }
-          if (shape1.color === shape2.color) {
-            this.colliding = true;
-            shape1.expand();
-            shape2.expand();
+          this.colliding = true;
+          shape1.expand();
+          shape2.expand();
 
-            setTimeout(() => {
-              this.background = shape1.color;
-              this.colliding = false;
-              this.shapes = this.shapes.filter(
-                (shape) => !shape.expanding && shape.color !== shape1.color
-              );
-            }, 1000);
-          }
+          setTimeout(() => {
+            this.background = shape1.color;
+            this.colliding = false;
+            this.shapes = this.shapes.filter(
+              (shape) => !shape.expanding && shape.color !== shape1.color
+            );
+          }, 1000);
+        }
+        if (
+          shape1.color !== shape2.color &&
+          !this.colliding &&
+          shape1 !== shape2 &&
+          shape1.intersects(shape2)
+        ) {
+          shape1.bounceAway(shape2);
+
+          // this.colliding = true;
+          console.log("watch out!");
         }
       });
     });

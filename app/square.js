@@ -11,6 +11,10 @@ class Square {
     this.expanding = false;
     this.frame = 0;
     this.shape = "square";
+    this.previousX = x;
+    this.previousY = y;
+    this.speedX = 0;
+    this.speedY = 0;
   }
 
   stayInsideTheGameBoard() {
@@ -46,6 +50,11 @@ class Square {
       this.frame++;
     } else {
       this.stayInsideTheGameBoard();
+      this.x += this.speedX;
+      this.y += this.speedY;
+      this.speedX *= friction;
+      this.speedY *= friction;
+
       push();
       rectMode(CENTER);
       fill(this.color);
@@ -79,12 +88,13 @@ class Square {
       return;
     }
     if (this.dragging) {
-      const newX = mouseX - this.offsetX;
-      const newY = mouseY - this.offsetY;
-      this.velocityX = newX - this.x;
-      this.velocityY = newY - this.y;
+      this.previousX = this.x;
+      this.previousY = this.y;
+
       this.x = mouseX + this.offsetX;
       this.y = mouseY + this.offsetY;
+      this.speedX = this.previousX - this.x;
+      this.speedY = this.previousY - this.y;
     }
   };
   onrelease = () => {
@@ -104,11 +114,29 @@ class Square {
         this.x - this.edgeLength < otherShape.x + otherShape.edgeLength &&
         this.y + this.edgeLength > otherShape.y &&
         this.y - this.edgeLength < otherShape.y + otherShape.edgeLength;
+      // if (otherShape.color !== this.color) {
+      //   this.speed += 1;
+      //   console.log(this.speed);
+      // }
+
       return collision;
     }
+    return false;
   };
 
   expand = () => {
     this.expanding = true;
+  };
+
+  bounceAway = (otherShape) => {
+    const difX = this.x - this.previousX;
+    const difY = this.y - this.previousY;
+    this.speedX *= -1;
+    this.speedY *= -1;
+    otherShape.speedX = 0;
+    otherShape.speedY = 0;
+    this.x = this.previousX - difX;
+    this.y = this.previousY - difY;
+    this.dragging = false;
   };
 }

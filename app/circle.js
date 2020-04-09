@@ -11,6 +11,10 @@ class Circle {
     this.expanding = false;
     this.frame = 0;
     this.shape = "circle";
+    this.previousX = x;
+    this.previousY = y;
+    this.speedX = 0;
+    this.speedY = 0;
   }
 
   stayInsideTheGameBoard() {
@@ -46,6 +50,10 @@ class Circle {
       this.frame++;
     } else {
       this.stayInsideTheGameBoard();
+      this.x += this.speedX;
+      this.y += this.speedY;
+      this.speedX *= friction;
+      this.speedY *= friction;
       push();
       fill(this.color);
       noStroke();
@@ -78,12 +86,12 @@ class Circle {
       return;
     }
     if (this.dragging) {
-      const newX = mouseX - this.offsetX;
-      const newY = mouseY - this.offsetY;
-      this.velocityX = newX - this.x;
-      this.velocityY = newY - this.y;
-      this.x = newX;
-      this.y = newY;
+      this.previousX = this.x;
+      this.previousY = this.y;
+      this.x = mouseX - this.offsetX;
+      this.y = mouseY - this.offsetY;
+      this.speedX = this.previousX - this.x;
+      this.speedY = this.previousY - this.y;
     }
   };
   onrelease = () => {
@@ -104,15 +112,26 @@ class Circle {
     }
     if (otherShape.shape === "square") {
       let collision =
-        this.x + this.radius > otherShape.x &&
-        this.x - this.radius < otherShape.x + otherShape.edgeLength &&
-        this.y + this.radius > otherShape.y &&
-        this.y - this.radius < otherShape.y + otherShape.edgeLength;
+        this.x + this.radius > otherShape.x - otherShape.edgeLength / 2 &&
+        this.x - this.radius < otherShape.x + otherShape.edgeLength / 2 &&
+        this.y + this.radius > otherShape.y - otherShape.edgeLength / 2 &&
+        this.y - this.radius < otherShape.y + otherShape.edgeLength / 2;
       return collision;
     }
+    return false;
   };
 
   expand = () => {
     this.expanding = true;
+  };
+
+  bounceAway = (otherShape) => {
+    const difX = this.x - this.previousX;
+    const difY = this.y - this.previousY;
+    this.speedX *= -1;
+    this.speedY *= -1;
+    this.x = this.previousX - difX;
+    this.y = this.previousY - difY;
+    this.dragging = false;
   };
 }
