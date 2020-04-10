@@ -139,4 +139,67 @@ const levels = [
       },
     ],
   },
+  {
+    color: orange,
+    shapes: [
+      {
+        shape: "square",
+        size: 35,
+        color: orange,
+        position: { x: 175, y: 130 },
+        type: "movable",
+      },
+
+      {
+        shape: "square",
+        size: 35,
+        color: blue,
+        position: { x: 325, y: 130 },
+        type: "movable",
+      },
+      {
+        shape: "square",
+        size: 35,
+        color: orange,
+        position: { x: 475, y: 130 },
+        type: "movable",
+      },
+      {
+        shape: "square",
+        size: 35,
+        color: blue,
+        position: { x: 625, y: 130 },
+        type: "movable",
+      },
+      {
+        shape: "square",
+        size: 35,
+        color: red,
+        position: { x: 175, y: 330 },
+        type: "movable",
+      },
+
+      {
+        shape: "square",
+        size: 35,
+        color: green,
+        position: { x: 325, y: 330 },
+        type: "movable",
+      },
+      {
+        shape: "square",
+        size: 35,
+        color: red,
+        position: { x: 475, y: 330 },
+        type: "movable",
+      },
+      {
+        shape: "square",
+        size: 35,
+        color: green,
+        position: { x: 625, y: 330 },
+        type: "movable",
+      },
+    ],
+  },
 ];

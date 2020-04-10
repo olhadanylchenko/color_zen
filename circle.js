@@ -39,7 +39,7 @@ class Circle extends Shape {
   display = () => {
     if (this.expanding) {
       // this.stayInsideTheGameBoard();
-      this.radius += 15;
+      this.radius *= 1.06;
       push();
       fill(this.color);
       noStroke();

@@ -38,7 +38,7 @@ class Square extends Shape {
 
   display = () => {
     if (this.expanding) {
-      this.edgeLength += 7.5;
+      this.edgeLength *= 1.08;
       push();
       rectMode(CENTER);
       fill(this.color);
