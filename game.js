@@ -17,26 +17,36 @@ class Game {
   }
 
   display() {
-    if (this.firstScreen) {
-      this.showFirstScreen();
-    } else if (this.startingLevel) {
-      this.youAreStartingLevelNumber();
-    } else if (this.failedAndRestart) {
-      this.showRestartBoard();
+    if (this.level < this.levels.length) {
+      if (this.firstScreen) {
+        this.showFirstScreen();
+      } else if (this.startingLevel) {
+        this.youAreStartingLevelNumber();
+      } else if (this.failedAndRestart) {
+        this.showRestartBoard();
+      } else {
+        this.levels[this.level].display();
+      }
     } else {
-      this.levels[this.level].display();
+      this.youWon();
     }
   }
 
   onclick() {
-    this.levels[this.level].onclick(mouseX, mouseY);
+    if (this.level < this.levels.length) {
+      this.levels[this.level].onclick(mouseX, mouseY);
+    }
   }
 
   onrelease() {
-    this.levels[this.level].onrelease();
+    if (this.level < this.levels.length) {
+      this.levels[this.level].onrelease();
+    }
   }
   ondrag() {
-    this.levels[this.level].ondrag(mouseX, mouseY);
+    if (this.level < this.levels.length) {
+      this.levels[this.level].ondrag(mouseX, mouseY);
+    }
   }
   nextLevel = () => {
     this.startingLevel = true;
@@ -108,8 +118,18 @@ class Game {
     text(`FILL SCREEN WITH BORDER COLOR`, width / 2, height / 2);
     pop();
   }
+  youWon() {
+    push();
+    fill(28, 28, 30);
+    rect(0, 0, width, height);
+    // rectMode(CENTER);
+    // fill(51, 150);
+    // noStroke();
+    // rect(width / 2, height / 2, 150, 70);
+    textAlign(CENTER, CENTER);
+    textSize(25);
+    fill(28, 28, 30);
+    text(`YOU WON`, width / 2, height / 2);
+    pop();
+  }
 }
-
-// startGame(){
-
-// }

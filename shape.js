@@ -16,10 +16,10 @@ class Shape {
   updatePosition = () => {
     this.x += this.speedX;
     this.speedX *= friction;
-
     this.y += this.speedY;
     this.speedY *= friction;
   };
+
   onclick = (mouseX, mouseY) => {
     if (this.type === "static") {
       return;
@@ -37,10 +37,10 @@ class Shape {
       return;
     }
     if (this.dragging) {
-      const offsetX = mouseX - this.offsetX;
-      const offsetY = mouseY - this.offsetY;
-      this.speedX = offsetX - this.x;
-      this.speedY = offsetY - this.y;
+      const newX = mouseX - this.offsetX;
+      const newY = mouseY - this.offsetY;
+      this.speedX = newX - this.x;
+      this.speedY = newY - this.y;
     }
   };
 
@@ -60,14 +60,14 @@ class Shape {
   };
 
   bounceAway = (otherShape) => {
+    if (this.type === "static" || otherShape.type === "static") {
+      return;
+    }
     const tempSpeedX = otherShape.speedX;
     const tempSpeedY = otherShape.speedY;
     otherShape.speedX = this.speedX;
     otherShape.speedY = this.speedY;
     this.speedX = tempSpeedX;
     this.speedY = tempSpeedY;
-
-    this.dragging = false;
-    otherShape.dragging = false;
   };
 }

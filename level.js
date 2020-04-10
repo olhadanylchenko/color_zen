@@ -107,7 +107,6 @@ class Level {
             }, 1000);
           } else {
             shape1.bounceAway(shape2);
-            console.log("watch out!");
           }
         }
       });
