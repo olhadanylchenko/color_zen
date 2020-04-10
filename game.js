@@ -81,11 +81,11 @@ class Game {
     rectMode(CENTER);
     fill(51, 150);
     noStroke();
-    rect(width / 2, height / 2, 300, 70);
+    rect(width / 2, height / 2, 200, 70);
     textAlign(CENTER, CENTER);
     textSize(32);
     fill(190);
-    text(`You Loser. Try again`, width / 2, height / 2);
+    text(`Try again`, width / 2, height / 2);
     pop();
   };
 
@@ -122,13 +122,13 @@ class Game {
     push();
     fill(28, 28, 30);
     rect(0, 0, width, height);
-    // rectMode(CENTER);
-    // fill(51, 150);
-    // noStroke();
-    // rect(width / 2, height / 2, 150, 70);
+    rectMode(CENTER);
+    fill(51, 150);
+    noStroke();
+    rect(width / 2, height / 2, 150, 70);
     textAlign(CENTER, CENTER);
     textSize(25);
-    fill(28, 28, 30);
+    fill(255, 255, 255);
     text(`YOU WON`, width / 2, height / 2);
     pop();
   }
