@@ -9,8 +9,8 @@ class Game {
       this.startingLevel = true;
       setTimeout(() => {
         this.startingLevel = false;
-      });
-    });
+      },3000);
+    }, 3000);
     this.level = 0;
     this.startingLevel = false;
     this.failedAndRestart = false;
