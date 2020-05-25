@@ -1,10 +1,5 @@
-Color Zen
-
-Inspired by the eponymous Nintendo Switch game.
-
-Built in vanilla javascript using the p5 library.
-
 # Color Zen
+>Built in vanilla javascript using the p5 library.
 
 ### About
 
