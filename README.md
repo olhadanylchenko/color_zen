@@ -12,5 +12,4 @@
 - <a href="https://olhadanylchenko.github.io/color_zen/">Click here to see deployed game.</a>
 
 ### Demo
-
-<img src="demo.gif" alt="Color Zen Demo" width="100%"  />
+<img src="demo.gif" alt="Color Zen Demo" width="40%"  />
