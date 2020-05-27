@@ -3,7 +3,7 @@
 
 ### About
 
-- Color Zen is a drag-and-drop puzzle game inspired by the <a href="https://play.google.com/store/apps/details?id=com.largeanimal.colorzen&hl=en">Nintendo Switch game</a> of the same name.
+- Color Zen is a drag-and-drop puzzle game inspired by the game of the same name.
 
 ### How to Play
 
